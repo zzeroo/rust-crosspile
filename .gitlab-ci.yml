@@ -1,6 +1,6 @@
 cache:
   key: "%CI_COMMIT_REF_SLUG%"
-  
+
 stages:
   - build
   - test
@@ -22,6 +22,7 @@ test:
     script:
         - docker start -ai CI_TEST-build
     after_script:
+        - rm -rf package-*
         - cd ..
         - rm -rf hello-world
         - docker rm CI_TEST-build
