@@ -1,0 +1,1 @@
+- check https://src.fedoraproject.org/rpms/mingw-nsiswrapper integration
