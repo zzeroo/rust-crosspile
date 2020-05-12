@@ -1,6 +1,3 @@
-cache:
-  key: "%CI_COMMIT_REF_SLUG%"
-
 stages:
   - build
   - test
@@ -11,18 +8,26 @@ before_script:
 build:
     stage: build
     script:
-        - docker build -t rust-crosspile .
+        - cd /tmp
+        - git clone https://gitlab.com/zzeroo/rust-crosspile -b development
+        - cd rust-crosspile
+        - docker build . -t rust-crosspile
+    after_script:
+        - cd /tmp
+        - rm -rf rust-crosspile
 
 test:
     stage: test
     before_script:
+        - cd /tmp
         - cargo new --bin hello-world
         - cd hello-world
-        - docker create -v `pwd`:/home/rust/src --name CI_TEST-build rust-crosspile
+        - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:latest
     script:
-        - docker start -ai CI_TEST-build
+        - docker start -ai HELLO-build
     after_script:
-        - rm -rf package-*
-        - cd ..
+        - docker rm HELLO-build
+        # docker rmi rust-crosspile
+        - cd /tmp
         - rm -rf hello-world
-        - docker rm CI_TEST-build
+        - rm -rf rust-crosspile

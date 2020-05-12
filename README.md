@@ -2,7 +2,7 @@
 
 Docker Container to cross compile and pack rust binaries for Windows 32/ 64Bit.
 
-This project has strong gkt+3 support. 
+This project has strong gkt+3 support.
 
 ## Usage:
 First you have to build the container, from within this repo dir.
@@ -31,15 +31,26 @@ docker rm PROJECT-build
 # Complete Usage Example
 
 ```bash
-git clone https://gitlab.com/zzeroo/rust-crosspile
+cd /tmp
+git clone https://gitlab.com/zzeroo/rust-crosspile -b development
 cd rust-crosspile
 docker build . -t rust-crosspile
 
 cd /tmp
-cargo build --bin hello-world
-cd example
+cargo new --bin hello-world
+cd hello-world
 docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:latest
 docker start -ai HELLO-build
+```
+
+## Cleanup
+
+```bash
+docker rm HELLO-build
+# docker rmi rust-crosspile
+cd /tmp
+rm -rf hello-world
+rm -rf rust-crosspile
 ```
 
 
