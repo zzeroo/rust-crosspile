@@ -18,6 +18,6 @@ test:
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name CI_TEST-build rust-crosspile
     script:
-        - docker start CI_TEST-build
+        - docker start -ai CI_TEST-build
     after_script:
         - docker rm CI_TEST-build
