@@ -61,18 +61,26 @@ WORKDIR /home/rust/src
 ## Create a package.sh in your project folder overrides the one in /usr/bin/ (don't forget `chmod +x packages.sh`)
 CMD ["package.sh"]
 
-# Usage:
-## Build the container
+# ## Usage:
+# First you have to build the container, from within this repo dir.
+#
+# ```bash
+# docker build . -t rust-crosspile
 # ```
-## docker build . -t rust-crosspile
+#
+# Now build a image **in your source directory!**. Your sources are mounted as a docker VOLUME
+# ```bash
+# # cd /path/to/your/src
+# docker create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
 # ```
-
-## Now build a image **in your source directory!**. Your sources are mounted as a docker VOLUME
-# ```
-## docker create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
-# ```
-
+#
 # From now on everytime you want conpile and pack the latest version call `docker start`
-## docker start -ai PROJECT-build
-
-## docker rm PROJECT-build
+#
+# ```bash
+# docker start -ai PROJECT-build
+# ```
+#
+# ### Cleanup
+# ```bash
+# docker rm PROJECT-build
+# ```
