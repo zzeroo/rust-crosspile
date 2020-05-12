@@ -5,7 +5,8 @@ Docker Container to cross compile rust binaries for Windows
 ## Usage
 First build the Image, from within this project directory.
 ```bash
-:wqdocker build . -t PROJECTNAME-build-image
+docker build . -t PROJECTNAME-build-image
+# eg: docker build . -t rust-crosspile
 ```
 
 
