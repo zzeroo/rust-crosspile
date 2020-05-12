@@ -1,4 +1,4 @@
-FROM fedora:latest
+FROM fedora:32
 WORKDIR /app
 # https://github.com/gsauthof/pe-util
 RUN dnf install -y \
@@ -20,11 +20,16 @@ RUN git clone https://github.com/gsauthof/pe-util.git \
 
 RUN cp /app/pe-util/build/peldd /usr/bin/
 
-ADD package.sh /usr/bin/package.sh
-RUN chmod 755 /usr/bin/package.sh
-
-
 RUN dnf install -y \
+  mingw64-gcc \
+  mingw64-freetype \
+  mingw64-cairo \
+  mingw64-harfbuzz \
+  mingw64-pango \
+  mingw64-poppler \
+  mingw64-gtk3 \
+  mingw64-winpthreads-static \
+  mingw64-glib2-static \
   mingw32-gcc \
   mingw32-freetype \
   mingw32-cairo \
@@ -34,11 +39,13 @@ RUN dnf install -y \
   mingw32-gtk3 \
   mingw32-winpthreads-static \
   mingw32-glib2-static \
-  gcc \
   zip \
   && dnf clean all -y
 
 RUN useradd -ms /bin/bash rust
+
+ADD package.sh /usr/bin/package.sh
+RUN chmod 755 /usr/bin/package.sh
 
 # User tasks
 USER rust
@@ -51,9 +58,6 @@ RUN . ~/.cargo/env && \
 
 ADD cargo.config /home/rust/.cargo/config
 
-ENV PKG_CONFIG_ALLOW_CROSS=1
-ENV PKG_CONFIG_PATH=/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig/
-ENV GTK_INSTALL_PATH=/usr/i686-w64-mingw32/sys-root/mingw/
 VOLUME /home/rust/src
 WORKDIR /home/rust/src
 

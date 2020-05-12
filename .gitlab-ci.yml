@@ -1,7 +1,29 @@
+stages:
+  - build
+  - test
+
 before_script:
   - docker info
 
-build_image:
-  script:
-    - docker build -t rust-crosspile .
-    - docker run rust-crosspile /bin/true
+build:
+    stage: build
+    script:
+        - git clone https://gitlab.com/zzeroo/rust-crosspile -b development
+        - cd rust-crosspile
+        - docker build . -t rust-crosspile
+    after_script:
+        - rm -rf rust-crosspile
+
+test:
+    stage: test
+    before_script:
+        - cargo new --bin hello-world
+        - cd hello-world
+        - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:latest
+    script:
+        - docker start -ai HELLO-build
+    after_script:
+        - docker rm HELLO-build
+        # docker rmi rust-crosspile
+        - rm -rf hello-world
+        - rm -rf rust-crosspile
