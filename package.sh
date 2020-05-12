@@ -1,5 +1,7 @@
 #!/bin/bash
+set -e
 
+  #statements
 source ~/.cargo/env
 cargo build --target=i686-pc-windows-gnu --release
 
