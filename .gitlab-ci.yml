@@ -3,20 +3,19 @@ stages:
   - test
 
 
-build:before_script:
+before_script:
   - docker info
 
-build:image:
-  script:
-    - docker build -t rust-crosspile .
+build:
+    stage: build
+    script:
+        - docker build -t rust-crosspile .
 
-test:before_script:
-  - cargo new --bin hello-world
-  - cd hello-world
-
-test:image:
-  before_script:
-    - docker create -v `pwd`:/home/rust/src --name ne4_konfig-build rust-crosspile
-
-  script:
-    - docker start -ai ne4_konfig-build
+test:
+    stage: test
+    before_script:
+        - cargo new --bin hello-world
+        - cd hello-world
+        - docker create -v `pwd`:/home/rust/src --name ne4_konfig-build rust-crosspile
+    script:
+        - docker start -ai ne4_konfig-build
