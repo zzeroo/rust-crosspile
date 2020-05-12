@@ -16,6 +16,8 @@ test:
     before_script:
         - cargo new --bin hello-world
         - cd hello-world
-        - docker create -v `pwd`:/home/rust/src --name ne4_konfig-build rust-crosspile
+        - docker create -v `pwd`:/home/rust/src --name CI_TEST-build rust-crosspile
     script:
-        - docker start -ai ne4_konfig-build
+        - docker start CI_TEST-build
+    after_script:
+        - docker rm CI_TEST-build
