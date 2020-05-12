@@ -8,18 +8,15 @@ before_script:
 build:
     stage: build
     script:
-        - cd /tmp
         - git clone https://gitlab.com/zzeroo/rust-crosspile -b development
         - cd rust-crosspile
         - docker build . -t rust-crosspile
     after_script:
-        - cd /tmp
         - rm -rf rust-crosspile
 
 test:
     stage: test
     before_script:
-        - cd /tmp
         - cargo new --bin hello-world
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:latest
@@ -28,6 +25,5 @@ test:
     after_script:
         - docker rm HELLO-build
         # docker rmi rust-crosspile
-        - cd /tmp
         - rm -rf hello-world
         - rm -rf rust-crosspile
