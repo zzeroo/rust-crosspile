@@ -27,6 +27,20 @@ docker start -ai PROJECT-build
 docker rm PROJECT-build
 ```
 
+# Complete Usage Examples
+## i686
+```bash
+git clone https://gitlab.com/zzeroo/rust-crosspile -b i686
+cd rust-crosspile
+docker build . -t rust-crosspile
+
+cd /tmp
+cargo build --bin hello-world
+cd example
+docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:latest
+docker start -ai HELLO-build
+```
+
 
 [erste idee]: https://github.com/LeoTindall/rust-mingw64-gtk-docker
 [zweite idee]: https://github.com/etrombly/rust-crosscompile
