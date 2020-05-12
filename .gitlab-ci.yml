@@ -10,7 +10,7 @@ build:
     script:
         - git clone https://gitlab.com/zzeroo/rust-crosspile -b development
         - cd rust-crosspile
-        - docker build . -t rust-crosspile
+        - docker build . -t rust-crosspile:CI
     after_script:
         - rm -rf rust-crosspile
 
@@ -19,11 +19,11 @@ test:
     before_script:
         - cargo new --bin hello-world
         - cd hello-world
-        - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:latest
+        - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     script:
         - docker start -ai HELLO-build
     after_script:
         - docker rm HELLO-build
-        # docker rmi rust-crosspile
+        - docker rmi rust-crosspile:CI
         - rm -rf hello-world
         - rm -rf rust-crosspile
