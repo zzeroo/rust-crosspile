@@ -9,6 +9,8 @@ before_script:
 
 build:
     stage: build
+    before_script:
+        - docker rmi rust-crosspile:CI
     script:
         - docker build -t rust-crosspile:CI .
 
@@ -16,7 +18,6 @@ create:
     stage: create
     before_script:
         - docker rm HELLO-build
-        - docker rmi rust-crosspile:CI
     script:
         - cargo new --bin hello-world
         - cd hello-world
@@ -34,6 +35,3 @@ rerun:
     script:
         - cd hello-world
         - docker start -ai HELLO-build
-    after_script:
-        - docker rm HELLO-build
-        - docker rmi rust-crosspile:CI
