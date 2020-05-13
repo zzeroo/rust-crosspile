@@ -17,7 +17,7 @@ create:
     stage: create
     before_script:
         - docker rm HELLO-build || true
-        - rm -rf hello-world || true
+        - sudo rm -rf hello-world || true
     script:
         - cargo new --bin hello-world
         - cd hello-world
@@ -40,5 +40,5 @@ run:
     after_script:
         - docker rm HELLO-build
         - docker rmi rust-crosspile:CI
-        - rm -rf hello-world
+        - sudo rm -rf hello-world
     allow_failure: true
