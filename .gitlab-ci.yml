@@ -31,14 +31,15 @@ create:
 run:
     stage: run
     script:
-        - ls -lsa .
-        - whoami
+        - chmod 777 hello-world
         - cd hello-world
         - docker start -ai HELLO-build
     cache:
         key: hello-world
         paths:
         - hello-world
+    after_script:
+        - docker stop HELLO-build
     allow_failure: true
 
 rerun:
@@ -50,4 +51,7 @@ rerun:
         key: hello-world
         paths:
         - hello-world
+    after_script:
+        - docker stop HELLO-build
+        - rm -rf hello-world
     allow_failure: true
