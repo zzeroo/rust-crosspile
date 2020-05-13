@@ -1,6 +1,9 @@
 stages:
   - build
-  - test
+  - create
+  - run
+  - rerun
+  - cleanup
 
 before_script:
   - docker info
@@ -10,13 +13,36 @@ build:
     script:
         - docker build -t rust-crosspile:CI .
 
-test:
-    stage: test
+create:
+    stage: create
     script:
         - cd $CI_PROJECT_DIR
         - cargo new --bin hello-world
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
+    after_script:
+        - cd $CI_PROJECT_DIR
+        - rm -rf hello-world
+        - rm -rf rust-crosspile
+
+run:
+    stage: run
+    script:
+        - cd $CI_PROJECT_DIR
+        - cd hello-world
+        - docker start -ai HELLO-build
+
+rerun:
+    stage: rerun
+    script:
+        - cd $CI_PROJECT_DIR
+        - cd hello-world
+        - docker start -ai HELLO-build
+        
+cleanup:
+    stage: cleanup
+    script:
+        - cd $CI_PROJECT_DIR
     after_script:
         - docker rm HELLO-build
         - docker rmi rust-crosspile:CI
