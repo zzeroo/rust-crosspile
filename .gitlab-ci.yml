@@ -26,7 +26,7 @@ create:
     cache:
         key: hello-world
         paths:
-            - hello-world
+            - $CI_PROJECT_DIR/hello-world
 
 run:
     stage: run
