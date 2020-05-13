@@ -27,7 +27,7 @@ create:
     cache:
         key: hello-world
         paths:
-            - $CI_PROJECT_DIR/hello-world
+        - $CI_PROJECT_DIR/hello-world
 
 run:
     stage: run
@@ -37,6 +37,8 @@ run:
         - docker start -ai HELLO-build
     cache:
         key: hello-world
+        paths:
+        - $CI_PROJECT_DIR/hello-world
     allow_failure: true
 
 rerun:
@@ -47,4 +49,6 @@ rerun:
         - docker start -ai HELLO-build
     cache:
         key: hello-world
+        paths:
+        - $CI_PROJECT_DIR/hello-world
     allow_failure: true
