@@ -10,7 +10,7 @@ before_script:
 build:
     stage: build
     before_script:
-        - docker rmi rust-crosspile:CI
+        - docker rmi rust-crosspile:CI || true
     script:
         - docker build -t rust-crosspile:CI .
 
