@@ -23,6 +23,10 @@ create:
         - cargo new --bin hello-world
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
+    cache:
+        key: hello-world
+        paths:
+            - hello-world
 
 run:
     stage: run
@@ -30,6 +34,8 @@ run:
         - cd $CI_PROJECT_DIR
         - cd hello-world
         - docker start -ai HELLO-build
+    cache:
+        key: hello-world
     allow_failure: true
 
 rerun:
@@ -38,4 +44,6 @@ rerun:
         - cd $CI_PROJECT_DIR
         - cd hello-world
         - docker start -ai HELLO-build
+    cache:
+        key: hello-world
     allow_failure: true
