@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "whoami: $(whoami)
+echo "whoami: $(whoami)"
 echo "pwd: $(pwd)"
 echo "ls -lsa (pwd):"
 $(ls -lsa pwd)
