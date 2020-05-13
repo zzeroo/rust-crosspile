@@ -8,24 +8,18 @@ before_script:
 build:
     stage: build
     script:
-        - cd %CI_PROJECT_DIR%
-        - git clone https://gitlab.com/zzeroo/rust-crosspile -b development
-        - cd rust-crosspile
-        - docker build . -t rust-crosspile:CI
-    after_script:
-        - cd %CI_PROJECT_DIR%
-        - rm -rf rust-crosspile
+        - docker build -t rust-crosspile .
 
 test:
     stage: test
     script:
-        - cd %CI_PROJECT_DIR%
+        - cd $CI_PROJECT_DIR
         - cargo new --bin hello-world
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     after_script:
         - docker rm HELLO-build
         - docker rmi rust-crosspile:CI
-        - cd %CI_PROJECT_DIR%
+        - cd $CI_PROJECT_DIR
         - rm -rf hello-world
         - rm -rf rust-crosspile
