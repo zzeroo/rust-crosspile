@@ -31,6 +31,8 @@ create:
 run:
     stage: run
     script:
+        - ls -lsa .
+        - whoami
         - cd hello-world
         - docker start -ai HELLO-build
     cache:
