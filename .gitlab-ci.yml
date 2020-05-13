@@ -2,7 +2,6 @@ stages:
   - build
   - create
   - run
-  - rerun
 
 before_script:
   - docker info
@@ -39,20 +38,7 @@ run:
         paths:
         - hello-world
     after_script:
-        - docker stop HELLO-build
-    allow_failure: true
-
-rerun:
-    stage: rerun
-    script:
-        - chmod 777 hello-world
-        - cd hello-world
-        - docker start -ai HELLO-build
-    cache:
-        key: hello-world
-        paths:
-        - hello-world
-    after_script:
-        - docker stop HELLO-build
+        - docker rm HELLO-build
+        - docker rmi rust-crosspile:CI
         - rm -rf hello-world
     allow_failure: true
