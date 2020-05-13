@@ -14,6 +14,9 @@ build:
 
 create:
     stage: create
+    before_script:
+        - docker rm HELLO-build
+        - docker rmi rust-crosspile:CI
     script:
         - cargo new --bin hello-world
         - cd hello-world
