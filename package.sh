@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "whoami: $(whoami)
+echo "pwd: $(pwd)"
+echo "ls -lsa (pwd):"
+$(ls -lsa pwd)
+
 for ARCH in i686 x86_64; do
   export PKG_CONFIG_ALLOW_CROSS=1
   export PKG_CONFIG_PATH=/usr/${ARCH}-w64-mingw32/sys-root/mingw/lib/pkgconfig/
