@@ -17,7 +17,7 @@ build:
 create:
     stage: create
     before_script:
-        - docker rm HELLO-build
+        - docker rm HELLO-build || true
     script:
         - cargo new --bin hello-world
         - cd hello-world
