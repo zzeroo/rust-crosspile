@@ -3,7 +3,7 @@
 echo "whoami: $(whoami)"
 echo "pwd: $(pwd)"
 echo "ls -lsa (pwd):"
-$(ls -lsa $(pwd))
+ls -lsa $(pwd)
 
 for ARCH in i686 x86_64; do
   export PKG_CONFIG_ALLOW_CROSS=1
