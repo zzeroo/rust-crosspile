@@ -20,10 +20,6 @@ create:
         - cargo new --bin hello-world
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
-    after_script:
-        - cd $CI_PROJECT_DIR
-        - rm -rf hello-world
-        - rm -rf rust-crosspile
 
 run:
     stage: run
@@ -38,8 +34,9 @@ rerun:
         - cd $CI_PROJECT_DIR
         - cd hello-world
         - docker start -ai HELLO-build
-        
+
 cleanup:
+    when: always
     stage: cleanup
     script:
         - cd $CI_PROJECT_DIR
