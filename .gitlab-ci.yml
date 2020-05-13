@@ -18,16 +18,14 @@ create:
     stage: create
     before_script:
         - docker rm HELLO-build || true
-        - rm -rf $CI_PROJECT_DIR/hello-world || true
     script:
-        - cd $CI_PROJECT_DIR
         - cargo new --bin hello-world
         - cd hello-world
         - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     cache:
         key: hello-world
         paths:
-        - $CI_PROJECT_DIR/hello-world
+        - hello-world
 
 run:
     stage: run
@@ -38,7 +36,7 @@ run:
     cache:
         key: hello-world
         paths:
-        - $CI_PROJECT_DIR/hello-world
+        - hello-world
     allow_failure: true
 
 rerun:
@@ -50,5 +48,5 @@ rerun:
     cache:
         key: hello-world
         paths:
-        - $CI_PROJECT_DIR/hello-world
+        - hello-world
     allow_failure: true
