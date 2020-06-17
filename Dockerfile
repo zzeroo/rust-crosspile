@@ -56,29 +56,30 @@ RUN . ~/.cargo/env && \
     rustup target add i686-pc-windows-gnu && \
     rustup target add x86_64-pc-windows-gnu
 
-ADD cargo.config /home/rust/.cargo/config
-
 VOLUME /home/rust/src
 WORKDIR /home/rust/src
 
 # This calls the final job
-## Create a package.sh in your project folder overrides the one in /usr/bin/ (don't forget `chmod +x packages.sh`)
 CMD ["package.sh"]
 
 # ## Usage:
-# First you have to build the container, from within this repo dir.
+# First you have to build the container, from within **this** repo dir.
 #
 # ```bash
 # docker build . -t rust-crosspile
 # ```
 #
-# Now build a image **in your source directory!**. Your sources are mounted as a docker VOLUME
+# Now build a image **in your source directory!**. 
+# Your sources are mounted as a docker VOLUME.
+
 # ```bash
 # # cd /path/to/your/src
 # docker create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
 # ```
 #
-# From now on everytime you want conpile and pack the latest version call `docker start`
+# From now on everytime you want compile and pack the latest version call 
+# `docker start IMAGE_NAME` replace **IMAGE_NAME** with the name from the
+# command above (PROJECT-build) in that example.
 #
 # ```bash
 # docker start -ai PROJECT-build

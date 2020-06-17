@@ -5,19 +5,32 @@ Docker Container to cross compile and pack rust binaries for Windows 32/ 64Bit.
 This project has strong gkt+3 support.
 
 ## Usage:
-First you have to build the container, from within this repo dir.
+First you have to build the container, from within **this** repo directory.
+
+The following example builds a container `rust-crosspile` named. 
+I use the same name for all my buils systems.
+
+**The container only has to be created once!**
 
 ```bash
 docker build . -t rust-crosspile
 ```
 
-Now build a image **in your source directory!**. Your sources are mounted as a docker VOLUME
+Now build a image **in your source directory!**. 
+Your sources are mounted as a docker VOLUME.
+
+The following example uses `PROJECT-build` as image name.
+
+**You have to create an image for each of your projects!**
+
 ```bash
-# cd /path/to/your/src
+# cd /path/to/your/project
 docker create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
 ```
 
-From now on everytime you want conpile and pack the latest version call `docker start`
+From now on everytime you want compile and pack the latest version 
+just call `docker start IMAGE_NAME`. Replace **IMAGE_NAME** with the name of the
+correct image for that project.
 
 ```bash
 docker start -ai PROJECT-build
