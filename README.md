@@ -2,6 +2,8 @@ Docker Container to cross compile and pack rust binaries for Windows 32/ 64Bit.
 
 This project has strong gkt+3 support.
 
+[![GitLab CI status](https://gitlab.com/zzeroo/rust-crosspile/badges/master/pipeline.svg)](https://gitlab.com/zzeroo/rust-crosspile/pipelines)
+
 ![Rust Crosspile Logo](resources/Docker_Rust.svg)
 
 # Usage:
