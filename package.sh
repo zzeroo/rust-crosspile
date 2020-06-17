@@ -5,7 +5,6 @@ for ARCH in i686 x86_64; do
   export PKG_CONFIG_PATH=/usr/${ARCH}-w64-mingw32/sys-root/mingw/lib/pkgconfig/
   export GTK_INSTALL_PATH=/usr/${ARCH}-w64-mingw32/sys-root/mingw/
 
-  #statements
   source ~/.cargo/env
   cargo build --target=${ARCH}-pc-windows-gnu --release
 
@@ -24,18 +23,8 @@ for ARCH in i686 x86_64; do
   [ -d share ] && cp -r share package-windows-${ARCH}/
   [ -f README.md ] && cp -r README.md package-windows-${ARCH}/
   [ -f LICENSE ] && cp -r LICENSE package-windows-${ARCH}/
-  #cp -r ~/Windows10 package/share/themes
 
-  cat << EOF > package-windows-${ARCH}/share/gtk-3.0/settings.ini
-[Settings]
-gtk-theme-name = Windows10
-gtk-font-name = Segoe UI 10
-gtk-xft-rgba = rgb
-gtk-xft-antialias = 1
-EOF
-
-  mingw-strip package-windows-${ARCH}/* || true
+  mingw-strip package-windows-${ARCH}/*
 
   zip -r package-windows-${ARCH}.zip package-windows-${ARCH}/*
-
 done
