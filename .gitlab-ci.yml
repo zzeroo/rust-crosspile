@@ -3,6 +3,7 @@ test:
     - docker info
     - docker rmi rust-crosspile:CI || true
     - docker rm HELLO-build || true
+    - sudo rm -rf hello-world || true
     - sudo rm -rf hello-world-rs || true
 
   script:
