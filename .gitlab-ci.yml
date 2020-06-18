@@ -16,9 +16,9 @@ test:
   #   - sudo chmod 777 hello-world-rs
     - cd hello-world-rs
     - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
-    - ls -all
   #   # start Docker container
-  #   - docker start -ai HELLO-build
+    - docker start -ai HELLO-build
+    - ls -all
   # artifacts:
   #   paths:
   #   - hello-world-0.1.0-windows-i686.zip
