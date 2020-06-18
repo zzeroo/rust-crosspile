@@ -7,11 +7,7 @@ test:
 
   script:
     # build Docker image
-    - docker image build \
-      --build-arg USER_ID=$(id -u ${USER}) \
-      --build-arg GROUP_ID=$(id -g ${USER}) \
-      -t rust-crosspile \
-      .
+    - docker image build --build-arg USER_ID=$(id -u ${USER}) --build-arg GROUP_ID=$(id -g ${USER}) -t rust-crosspile .
     # next clone a test repo
     - git clone --single-branch --branch gtk3 https://gitlab.com/zzeroo/hello-world-rs.git
     - cd hello-world-rs
