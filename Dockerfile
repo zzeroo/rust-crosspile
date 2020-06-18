@@ -54,6 +54,9 @@ RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
 
 USER rust
 
+RUN id \
+    ls -alt
+
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain=stable --profile=minimal
 
 RUN . ~/.cargo/env && \
