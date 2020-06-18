@@ -12,7 +12,7 @@ test:
     - cargo new --bin hello-world
     - cd hello-world && docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     # start Docker container
-    - cd hello-world && docker start -ai HELLO-build
+    - pwd && docker start -ai HELLO-build
 
   after_script:
     - docker rm HELLO-build
