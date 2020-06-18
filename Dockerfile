@@ -49,7 +49,7 @@ ARG GROUP_ID
 RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
     groupadd -g ${GROUP_ID} rust &&\
     useradd -l -u ${USER_ID} -g rust rust &&\
-    install -d -m 0755 -o rust -g rust /home/rust
+    install -d -m 0755 -o rust -g rust /home/rust \
 ;fi
 
 USER rust
