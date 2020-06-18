@@ -18,8 +18,8 @@ test:
     - ls -alt
   artifacts:
     paths:
-    - hello-world-0.1.0-windows-i686.zip
-    - hello-world-0.1.0-windows-x86_64.zip
+    - hello-world-rs\hello-world-0.1.0-windows-i686.zip
+    - hello-world-rs\hello-world-0.1.0-windows-x86_64.zip
 
   after_script:
     - docker rm HELLO-build
