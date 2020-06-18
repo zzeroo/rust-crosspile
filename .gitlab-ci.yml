@@ -10,7 +10,7 @@ test:
     - ls -all
   #
   #   # build Docker image
-  #   - docker build -t rust-crosspile:CI .
+    - docker build -t rust-crosspile:CI .
   #   # create Docker container
     - git clone --single-branch --branch gtk3 https://gitlab.com/zzeroo/hello-world-rs.git
   #   - sudo chmod 777 hello-world-rs
