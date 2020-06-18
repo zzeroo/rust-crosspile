@@ -3,18 +3,22 @@ test:
     - docker info
     - docker rmi rust-crosspile:CI || true
     - docker rm HELLO-build || true
-    - sudo rm -rf hello-world || true
+    - sudo rm -rf hello-world-rs || true
 
   script:
     # build Docker image
-    - docker build -t rust-crosspile:CI .
+    - docker image build --build-arg USER_ID=$(id -u ${USER}) --build-arg GROUP_ID=$(id -g ${USER}) -t rust-crosspile:CI .
+    # next clone a test repo
+    - git clone --single-branch --branch gtk3 https://gitlab.com/zzeroo/hello-world-rs.git
+    - cd hello-world-rs
     # create Docker container
-    - cargo new --bin hello-world
-    - sudo chmod 777 hello-world
-    - cd hello-world
     - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     # start Docker container
     - docker start -ai HELLO-build
+  artifacts:
+    paths:
+    - hello-world-rs/hello-world-0.1.0-windows-i686.zip
+    - hello-world-rs/hello-world-0.1.0-windows-x86_64.zip
 
   after_script:
     - docker rm HELLO-build
