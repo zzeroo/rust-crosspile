@@ -3,17 +3,16 @@ test:
     - docker info
     - docker rmi rust-crosspile:CI || true
     - docker rm HELLO-build || true
-    - sudo rm -rf hello-world || true
+    - rm -rf hello-world || true
 
   script:
     # build Docker image
     - docker build -t rust-crosspile:CI .
     # create Docker container
     - cargo new --bin hello-world
-    - cd hello-world
-    - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
+    - cd hello-world && docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     # start Docker container
-    - docker start -ai HELLO-build
+    - cd hello-world && docker start -ai HELLO-build
 
   after_script:
     - docker rm HELLO-build
