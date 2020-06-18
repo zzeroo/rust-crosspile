@@ -67,7 +67,7 @@ RUN . ~/.cargo/env && \
 VOLUME /home/rust/src
 WORKDIR /home/rust/src
 
-ADD package.sh /home/rust/package.sh
+ADD --chown=rust:rust package.sh /home/rust/package.sh
 RUN chmod 755 /home/rust/package.sh
 
 # This calls the final job
