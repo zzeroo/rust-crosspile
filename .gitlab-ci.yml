@@ -13,9 +13,8 @@ test:
     - docker build -t rust-crosspile:CI .
   #   # create Docker container
     - git clone --single-branch --branch gtk3 https://gitlab.com/zzeroo/hello-world-rs.git
-    - chmod ug+rw hello-world-rs
     - cd hello-world-rs
-    - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
+    - docker create --user `id -u` -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
   #   # start Docker container
     - docker start -ai HELLO-build
     - ls -all
