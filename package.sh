@@ -13,7 +13,6 @@ for ARCH in i686 x86_64; do
   export VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
   export NAME_VERSION="${NAME}-${VERSION}"
   # create destination directory
-  ls -alt
   mkdir -p "${NAME_VERSION}-windows-${ARCH}"
   cp target/${ARCH}-pc-windows-gnu/release/*.exe "${NAME_VERSION}-windows-${ARCH}"
   # extract all dependencies to libs
