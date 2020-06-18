@@ -6,23 +6,23 @@ test:
     - sudo rm -rf hello-world-rs || true
 
   script:
-    - id
-    - ls -all
-  #
-  #   # build Docker image
-    - docker build -t rust-crosspile:CI .
-  #   # create Docker container
+    # build Docker image
+    - docker build \
+      --build-arg USER_ID=$(id -u ${USER}) \
+      --build-arg GROUP_ID=$(id -g ${USER}) \
+      -t rust-crosspile \
+      .
+    # next clone a test repo
     - git clone --single-branch --branch gtk3 https://gitlab.com/zzeroo/hello-world-rs.git
     - cd hello-world-rs
-    - docker create --user `id -u`:`id -g` -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
-  #   # start Docker container
-    - docker start -ai HELLO-build
-    - ls -all
-  # artifacts:
-  #   paths:
-  #   - hello-world-0.1.0-windows-i686.zip
-  #   - hello-world-0.1.0-windows-x86_64.zip
-  #
-  # after_script:
-  #   - docker rm HELLO-build
-  #   - docker rmi rust-crosspile:CI
+    # create Docker container
+    - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
+    # start Docker container
+  artifacts:
+    paths:
+    - hello-world-0.1.0-windows-i686.zip
+    - hello-world-0.1.0-windows-x86_64.zip
+
+  after_script:
+    - docker rm HELLO-build
+    - docker rmi rust-crosspile:CI

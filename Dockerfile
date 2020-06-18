@@ -42,12 +42,16 @@ RUN dnf install -y \
   zip \
   && dnf clean all -y
 
-RUN useradd -ms /bin/bash rust
-
-ADD package.sh /usr/bin/package.sh
-RUN chmod 755 /usr/bin/package.sh
-
 # User tasks
+ARG USER_ID
+ARG GROUP_ID
+
+RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
+    groupadd -g ${GROUP_ID} rust &&\
+    useradd -l -u ${USER_ID} -g rust rust &&\
+    install -d -m 0755 -o rust -g rust /home/rust &&\
+;fi
+
 USER rust
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain=stable --profile=minimal
@@ -59,33 +63,49 @@ RUN . ~/.cargo/env && \
 VOLUME /home/rust/src
 WORKDIR /home/rust/src
 
+ADD package.sh /home/rust/package.sh
+RUN chmod 755 /home/rust/package.sh
+
 # This calls the final job
-CMD ["package.sh"]
+CMD ["/home/rust/package.sh"]
 
-# ## Usage:
-# First you have to build the container, from within **this** repo dir.
-#
+# # Usage:
+# First you have to build the container, from within **this** repo directory.
+# 
+# The following example builds a container `rust-crosspile` named.
+# I use the same name for all my buils systems.
+# 
+# **The container only has to be created once!**
+# 
 # ```bash
-# docker build . -t rust-crosspile
+# docker build \
+#   --build-arg USER_ID=$(id -u ${USER}) \
+#   --build-arg GROUP_ID=$(id -g ${USER}) \
+#   -t rust-crosspile \
+#   .
 # ```
-#
-# Now build a image **in your source directory!**. 
+# 
+# Now build a image **in your source directory!**.
 # Your sources are mounted as a docker VOLUME.
-
+# 
+# The following example uses `PROJECT-build` as image name.
+# 
+# **You have to create an image for each of your projects!**
+# 
 # ```bash
-# # cd /path/to/your/src
+# # cd /path/to/your/project
 # docker create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
 # ```
-#
-# From now on everytime you want compile and pack the latest version call 
-# `docker start IMAGE_NAME` replace **IMAGE_NAME** with the name from the
-# command above (PROJECT-build) in that example.
-#
+# 
+# From now on everytime you want compile and pack the latest version
+# just call `docker start IMAGE_NAME`. Replace **IMAGE_NAME** with the name of the
+# correct image for that project.
+# 
 # ```bash
 # docker start -ai PROJECT-build
 # ```
-#
-# ### Cleanup
+# 
+# ## Cleanup
 # ```bash
 # docker rm PROJECT-build
 # ```
