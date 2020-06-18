@@ -1,44 +1,20 @@
-stages:
-  - build
-  - create
-  - run
 
 before_script:
   - docker info
+  - docker rmi rust-crosspile:CI || true
+  - docker rm HELLO-build || true
+  - sudo rm -rf hello-world || true
 
-build:
-    stage: build
-    before_script:
-        - docker rmi rust-crosspile:CI || true
-    script:
-        - docker build -t rust-crosspile:CI .
+script:
+  # build Docker image
+  - docker build -t rust-crosspile:CI .
+  # create Docker container
+  - cargo new --bin hello-world
+  - cd hello-world
+  - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
+  # start Docker container
+  - docker start -ai HELLO-build
 
-create:
-    stage: create
-    before_script:
-        - docker rm HELLO-build || true
-        - sudo rm -rf hello-world || true
-    script:
-        - cargo new --bin hello-world
-        - cd hello-world
-        - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
-    cache:
-        key: hello-world
-        paths:
-        - hello-world
-
-run:
-    stage: run
-    script:
-        - sudo chmod 777 hello-world
-        - cd hello-world
-        - docker start -ai HELLO-build
-    cache:
-        key: hello-world
-        paths:
-        - hello-world
-    after_script:
-        - docker rm HELLO-build
-        - docker rmi rust-crosspile:CI
-        - sudo rm -rf hello-world
-    allow_failure: true
+after_script:
+  - docker rm HELLO-build
+  - docker rmi rust-crosspile:CI
