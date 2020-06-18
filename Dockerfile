@@ -53,6 +53,7 @@ RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
 ;fi
 
 USER rust
+WORKDIR /home/rust/
 
 RUN id &&\
     ls -alt
