@@ -14,6 +14,7 @@ test:
     # create Docker container
     - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     # start Docker container
+    - docker start -ai HELLO-build
   artifacts:
     paths:
     - hello-world-0.1.0-windows-i686.zip
