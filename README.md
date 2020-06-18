@@ -15,7 +15,7 @@ I use the same name for all my buils systems.
 **The container only has to be created once!**
 
 ```bash
-docker build \
+docker image build \
   --build-arg USER_ID=$(id -u ${USER}) \
   --build-arg GROUP_ID=$(id -g ${USER}) \
   -t rust-crosspile \
