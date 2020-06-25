@@ -1,6 +1,6 @@
 Docker Container to cross compile and pack rust binaries for Windows 32/ 64Bit.
 
-This project has strong gkt+3 support.
+This project has strong gkt+3 support. And includes the [NSIS (Nullsoft Scriptable Install System)].
 
 [![GitLab CI status](https://gitlab.com/zzeroo/rust-crosspile/badges/master/pipeline.svg)](https://gitlab.com/zzeroo/rust-crosspile/pipelines)
 
@@ -72,6 +72,23 @@ rm -rf hello-world
 rm -rf rust-crosspile
 ```
 
+# Tipps
+
+One can test the environment with the following command:
+```bash
+docker run --rm -it -v$(pwd):/home/rust/src rust-crosspile /bin/bash
+```
+
+This will start an environment exactly like the one `docker start` creates.
+Look at the file `package.sh` (You can `cat /usr/bin/package.sh` from within
+the session) for the commands.
+
+# [NSIS (Nullsoft Scriptable Install System)]
+
+If your rust project contains a .nis (stored in crate root dir) script file this
+container builds the installer as well.
+
 
 [erste idee]: https://github.com/LeoTindall/rust-mingw64-gtk-docker
 [zweite idee]: https://github.com/etrombly/rust-crosscompile
+[NSIS (Nullsoft Scriptable Install System)]: https://nsis.sourceforge.io/Main_Page
