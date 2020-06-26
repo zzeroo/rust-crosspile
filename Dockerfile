@@ -1,4 +1,4 @@
-FROM fedora:33
+FROM fedora:32
 WORKDIR /app
 # https://github.com/gsauthof/pe-util
 RUN dnf install -y \
