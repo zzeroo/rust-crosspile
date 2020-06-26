@@ -22,5 +22,6 @@ test:
       #  - hello-world-rs/hello-world-0.1.0-windows-x86_64.zip
 
   after_script:
+    - ls -alt
     - docker rm HELLO-build
     - docker rmi rust-crosspile:CI
