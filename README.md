@@ -48,7 +48,27 @@ Use the parameter `-ai` to get the output in your current terminal sessison.
 docker start -ai PROJECT-build
 ```
 
-## The build process `package.sh`
+# Artefacts
+The `package.sh` script creates 2 directories. One for 32bit windows (i686) and
+one for 64bit (x86_64) windows version. These directories contain your rust
+binarie and all gtk dependencies.
+Additional these two directories are packed into 7zip archives.
+
+```bash
+# example directorie layout after run
+$> ls -l | awk {'print $9'} # just the files and folders
+Cargo.lock
+Cargo.toml
+hello-world-0.1.0-windows-i686
+hello-world-0.1.0-windows-i686.zip
+hello-world-0.1.0-windows-x86_64
+hello-world-0.1.0-windows-x86_64.zip
+src
+target
+```
+
+## The build process
+### `package.sh`
 
 The containers command is to run the file `package.sh` (see [that file])
 from the path `/usr/bin/package.sh`.
@@ -56,6 +76,11 @@ from the path `/usr/bin/package.sh`.
 **If you create such a file `package.sh` in the root of your own project you
 have full controll of what commands are run in the crosscompile environment.
 You can fully customize the whole script.**
+
+### [NSIS (Nullsoft Scriptable Install System)]
+
+If your project contains a file with extension .nis (stored in the root dir) the
+`package.sh` script builds an NSIS installer for 32/ 64bit as well.
 
 ## Cleanup
 For cleanup just remove the project's container.
@@ -105,11 +130,6 @@ docker run --rm -it -v$(pwd):/home/rust/src rust-crosspile /bin/bash
 This will start an environment exactly like the one `docker start` creates.
 Look at the file `package.sh` (You can `cat /usr/bin/package.sh` from within
 the session) for the commands the container would execute.
-
-# [NSIS (Nullsoft Scriptable Install System)]
-
-If your project contains a .nis (stored in the root dir) the `package.sh` script
-builds an NSIS installer as well.
 
 
 [erste idee]: https://github.com/LeoTindall/rust-mingw64-gtk-docker
