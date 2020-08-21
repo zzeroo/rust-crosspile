@@ -40,6 +40,7 @@ RUN dnf install -y \
   mingw64-pango \
   mingw64-poppler \
   mingw64-winpthreads-static \
+  wine \
   zip \
   && dnf clean all -y \
   && rm -rf /var/cache/yum
@@ -71,8 +72,10 @@ RUN . ~/.cargo/env && \
 VOLUME /home/rust/src
 WORKDIR /home/rust/src
 
-ADD --chown=rust:rust package.sh /home/rust/package.sh
-RUN chmod 755 /home/rust/package.sh
+ADD --chown=rust:rust package.sh /usr/bin/package.sh
+RUN chmod 755 /usr/bin/package.sh
+
+ENV PATH /home/rust/src:$PATH
 
 # This calls the final job
-CMD ["/home/rust/package.sh"]
+CMD ["package.sh"]
