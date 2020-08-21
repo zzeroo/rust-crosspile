@@ -14,12 +14,17 @@ test:
     # create Docker container
     - docker create -v `pwd`:/home/rust/src --name HELLO-build rust-crosspile:CI
     # start Docker container
-    - docker start -ai HELLO-build
+    - docker start HELLO-build > ci-build.log 2> ci-error.log || true
+    - ls -al
   artifacts:
     paths:
-    - hello-world-rs/hello-world-0.1.0-windows-i686.zip
-    - hello-world-rs/hello-world-0.1.0-windows-x86_64.zip
+      - ci-build.log
+      - ci-error.log
+      - hello-world-rs/hello-world-0.1.0-windows-i686.zip
+      - hello-world-rs/hello-world-0.1.0-windows-x86_64.zip
 
   after_script:
+    - ls -alt
+    - docker stop HELLO-build
     - docker rm HELLO-build
     - docker rmi rust-crosspile:CI
