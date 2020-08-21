@@ -8,15 +8,15 @@ And it includes the [NSIS (Nullsoft Scriptable Install System)].
 ![Rust Crosspile Logo](resources/Docker_Rust.svg)
 
 # Usage:
-First you have to build the container, from within **this** repo directory.
+First you have to build the image, from within **this** repo directory.
 Your have to pass the user and group id of the your user to the build command.
 See [here][docker containers as current user] why.
 
-The following example builds a container named `rust-crosspile`.
-This container builds the foundation for all your projects you whant to
+The following example builds a image named `rust-crosspile`.
+This image builds the foundation for all your projects you whant to
 cross compile.
 
-**The container only has to be created once!**
+**The image only has to be build once!**
 
 ```bash
 docker image build \
@@ -26,26 +26,26 @@ docker image build \
   .
 ```
 
-Now build a image **in your project's source directory!**.
+Now build a container **in your project's source directory!**.
 Your sources are mounted as a docker VOLUME into this new created container.
 
-The following example uses `PROJECT-build` as image name for that container.
+The following example uses `PROJECT-build` as name for that container.
 
 **You have to create an image for each of your projects!**
 
 ```bash
 # cd /path/to/your/project
-docker create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
+docker container create -v `pwd`:/home/rust/src --name PROJECT-build rust-crosspile:latest
 ```
 
-From now on everytime you want compile and pack the latest version
+From now on everytime you want compile and pack the latest version of your app
 just call `docker start IMAGE_NAME` from the root ouf your project's source dir.
 Replace **IMAGE_NAME** with the name of the correct container for that project.
 Use the parameter `-ai` to get the output in your current terminal sessison.
 
 ```bash
 # cd /path/to/your/project
-docker start -ai PROJECT-build
+docker container start -ai PROJECT-build
 ```
 
 # Artefacts
@@ -59,10 +59,10 @@ Additional these two directories are packed into 7zip archives.
 $> ls -l | awk {'print $9'} # just the files and folders
 Cargo.lock
 Cargo.toml
-hello-world-0.1.0-windows-i686
-hello-world-0.1.0-windows-i686.zip
-hello-world-0.1.0-windows-x86_64
-hello-world-0.1.0-windows-x86_64.zip
+hello-world-0.1.0-windows-i686       # Artefact
+hello-world-0.1.0-windows-i686.zip   # Artefact
+hello-world-0.1.0-windows-x86_64     # Artefact
+hello-world-0.1.0-windows-x86_64.zip # Artefact
 src
 target
 ```
@@ -71,11 +71,14 @@ target
 ### `package.sh`
 
 The containers command is to run the file `package.sh` (see [that file])
-from the path `/usr/bin/package.sh`.
+from the path `/usr/bin/package.sh`. This file is part of the basic image.
 
 **If you create such a file `package.sh` in the root of your own project you
 have full controll of what commands are run in the crosscompile environment.
 You can fully customize the whole script.**
+
+If you create such a `package.sh` don't forget to make it executable!
+`chmod +x package.sh`
 
 ### [NSIS (Nullsoft Scriptable Install System)]
 
@@ -101,7 +104,11 @@ docker rmi rust-crosspile
 cd /tmp
 git clone https://gitlab.com/zzeroo/rust-crosspile
 cd rust-crosspile
-docker build . -t rust-crosspile
+docker build \
+  --build-arg USER_ID=$(id -u ${USER}) \
+  --build-arg GROUP_ID=$(id -g ${USER}) \
+  -t rust-crosspile \
+  .
 
 cd /tmp
 cargo new --bin hello-world
