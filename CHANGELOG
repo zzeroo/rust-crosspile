@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.1.0] - 2020-08-21
+### Added
+- wine added to call the NSIS from linux
+- Option created to use a local own `package.sh` instead of the one from that
+  image. See README.md for details.
+- Gitlab CI Infrastructure established
+
 ## [v1.0.0] - 2020-06-24
 ### Added
 - NSIS buildsystem
